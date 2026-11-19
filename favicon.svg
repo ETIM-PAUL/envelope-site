@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="134 134 757 757" width="757" height="757">
+  <title>Envelope</title>
+  <circle cx="512.5" cy="512.5" r="378.5" fill="#C4432E"/>
+  <circle cx="512.5" cy="512.5" r="320.5" fill="none" stroke="#A6371F" stroke-width="10"/>
+  <path d="M271 338 L512.5 528 L754 338 V686 H271 Z" fill="#F6F1E7"/>
+</svg>
