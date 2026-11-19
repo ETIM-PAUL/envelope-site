@@ -24,6 +24,13 @@
   p { margin: 0; }
   .lead { color: var(--mute); margin-bottom: 24px; }
   form { display: grid; gap: 10px; margin-bottom: 20px; }
+  /* A link with a statement opens straight to the result: the paste box never shows, a loader does. */
+  .has-link #form { display: none; }
+  .loader { display: none; align-items: center; gap: 12px; color: var(--mute); margin: 24px 0; }
+  .loader:not([hidden]) { display: flex; }
+  .loader::before { content: ''; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--gold); animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .loader::before { animation-duration: 3s; } }
   textarea { width: 100%; min-height: 76px; resize: vertical; background: var(--raised); color: var(--paper);
     border: 1px solid var(--line); border-radius: 12px; padding: 12px; font: 13px/1.4 ui-monospace, Menlo, monospace; }
   button { justify-self: start; background: var(--seal); color: var(--paper); border: 0; border-radius: 12px;
@@ -60,6 +67,7 @@
 </style>
 </head>
 <body>
+<script>if (location.hash.length > 1) document.documentElement.classList.add('has-link')</script>
 <main>
   <header>
     <div class="seal" aria-hidden="true"><svg width="20" height="15" viewBox="0 0 34 26"><path d="M0 0 L17 13 L34 0 V26 H0 Z" fill="#F6F1E7"/></svg></div>
@@ -72,6 +80,7 @@
     <button type="submit">Check statement</button>
   </form>
   <button type="button" id="another" class="link" hidden>Check another statement</button>
+  <div id="loader" class="loader" hidden>Checking against Solana…</div>
   <p id="status" role="status"></p>
   <div id="result"></div>
   <footer>
@@ -4814,9 +4823,6 @@
       (transport) => getRpcTransportWithRequestCoalescing(transport, getSolanaRpcPayloadDeduplicationKey)
     );
   }
-  function createSolanaRpc(clusterUrl, config) {
-    return createSolanaRpcFromTransport(createDefaultRpcTransport({ url: clusterUrl, ...config }));
-  }
   function createSolanaRpcFromTransport(transport) {
     return createRpc({
       api: createSolanaRpcApi(DEFAULT_RPC_CONFIG),
@@ -5569,6 +5575,22 @@
     devnet: "https://api.devnet.solana.com",
     "mainnet-beta": "https://api.mainnet-beta.solana.com"
   };
+  function retryingRpc(url) {
+    const base = createDefaultRpcTransport({ url });
+    const transport = async (config) => {
+      for (let attempt = 0; ; attempt++) {
+        try {
+          return await base(config);
+        } catch (error) {
+          const status = error?.context?.statusCode;
+          const limited = status === 429 || /#8100002|429|too many requests/i.test(String(error));
+          if (!limited || attempt >= 6) throw error;
+          await new Promise((resolve) => setTimeout(resolve, 600 * 2 ** Math.min(attempt, 4)));
+        }
+      }
+    };
+    return createSolanaRpcFromTransport(transport);
+  }
   var $ = (id) => document.getElementById(id);
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -5707,7 +5729,15 @@ issued: ${issuedAt}`);
   async function check(encoded) {
     const status = $("status");
     $("result").replaceChildren();
-    status.textContent = "Checking against Solana\u2026";
+    status.textContent = "";
+    $("loader").hidden = false;
+    try {
+      await runCheck(encoded, status);
+    } finally {
+      $("loader").hidden = true;
+    }
+  }
+  async function runCheck(encoded, status) {
     const [statementPart = "", sealPart] = encoded.trim().split("~");
     let statement;
     try {
@@ -5720,7 +5750,7 @@ issued: ${issuedAt}`);
     const rpcUrl = override || RPC_URLS[statement.cluster] || RPC_URLS.devnet;
     try {
       await wasmReady;
-      const report = await verifyStatement(createSolanaRpc(rpcUrl), statement);
+      const report = await verifyStatement(retryingRpc(rpcUrl), statement);
       status.textContent = "";
       render(statement, report);
       $("result").children[0]?.after(await sealNote(statementPart, sealPart, statement.cluster));
@@ -5750,6 +5780,7 @@ issued: ${issuedAt}`);
     void check(location.hash.slice(1));
   }
   $("another").addEventListener("click", () => {
+    document.documentElement.classList.remove("has-link");
     $("form").hidden = false;
     $("another").hidden = true;
     $("input").focus();

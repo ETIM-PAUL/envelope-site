@@ -705,6 +705,53 @@
         text-underline-offset: 3px;
       }
 
+      /* contact */
+      .contact-form {
+        margin-top: 2rem;
+        max-width: 36rem;
+        display: grid;
+        gap: 1rem;
+      }
+      .contact-form label {
+        display: grid;
+        gap: 0.4rem;
+        font-size: var(--step--1);
+        color: var(--mute);
+      }
+      .contact-form input,
+      .contact-form textarea {
+        font: inherit;
+        font-size: var(--step-0);
+        color: var(--paper);
+        background: var(--ink-raised);
+        border: 1px solid var(--ink-line);
+        border-radius: 12px;
+        padding: 0.75rem 0.9rem;
+      }
+      .contact-form textarea {
+        min-height: 8rem;
+        resize: vertical;
+      }
+      .contact-form .trap {
+        position: absolute;
+        left: -9999px;
+        height: 0;
+        overflow: hidden;
+      }
+      .contact-form .button {
+        justify-self: start;
+      }
+      .contact-status {
+        min-height: 1.4em;
+        color: var(--mute);
+      }
+      .contact-status.ok {
+        color: var(--gold);
+      }
+      .contact-status.bad {
+        color: var(--seal);
+      }
+
       /* faq */
       .faq {
         margin-top: 2.5rem;
@@ -1519,6 +1566,20 @@
             </details>
           </div>
         </section>
+        <section aria-labelledby="contact-title">
+          <div class="section-head">
+            <h2 id="contact-title">Talk to the team.</h2>
+            <p>Questions, feedback or a bug. We read every message.</p>
+          </div>
+          <form class="contact-form" id="contact-form" novalidate>
+            <label>Your name <input name="name" autocomplete="name" maxlength="80" required /></label>
+            <label>Your email <input name="email" type="email" autocomplete="email" maxlength="120" required /></label>
+            <label class="trap" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off" /></label>
+            <label>Message <textarea name="message" maxlength="2000" required></textarea></label>
+            <button class="button primary" type="submit" id="contact-send">Send message</button>
+            <p class="contact-status" id="contact-status" role="status"></p>
+          </form>
+        </section>
       </main>
 
       <footer>
@@ -1531,6 +1592,58 @@
       </footer>
     </div>
 
+    <script>
+      ;(function () {
+        var form = document.getElementById('contact-form')
+        var status = document.getElementById('contact-status')
+        var send = document.getElementById('contact-send')
+        form.addEventListener('submit', function (event) {
+          event.preventDefault()
+          var data = new FormData(form)
+          var body = {
+            name: String(data.get('name') || ''),
+            email: String(data.get('email') || ''),
+            message: String(data.get('message') || ''),
+            website: String(data.get('website') || ''),
+          }
+          status.className = 'contact-status'
+          status.textContent = 'Sending…'
+          send.disabled = true
+          fetch('https://envelope.lysthq.com/contact', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(body),
+          })
+            .then(function (res) {
+              return res.json().then(
+                function (json) {
+                  return { ok: res.ok, json: json }
+                },
+                function () {
+                  return { ok: res.ok, json: {} }
+                },
+              )
+            })
+            .then(function (r) {
+              if (r.ok) {
+                form.reset()
+                status.className = 'contact-status ok'
+                status.textContent = 'Thanks. Your message is with the team.'
+              } else {
+                status.className = 'contact-status bad'
+                status.textContent = r.json.error || 'Something went wrong. Try again in a moment.'
+              }
+            })
+            .catch(function () {
+              status.className = 'contact-status bad'
+              status.textContent = "Couldn't send that. Check your connection and try again."
+            })
+            .then(function () {
+              send.disabled = false
+            })
+        })
+      })()
+    </script>
     <script>
       ;(function () {
         var letter = document.getElementById('letter')
