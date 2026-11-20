@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy | Envelope</title>
+    <meta name="description" content="What Envelope handles, who else sees it, and what you can ask us to delete." />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0f1116;
+        --ink-raised: #171a21;
+        --ink-line: #232733;
+        --paper: #f6f1e7;
+        --paper-dim: #dcd6c8;
+        --mute: #8c93a6;
+        --seal: #c4432e;
+        --gold: #c9a227;
+        --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+        --body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        background: var(--ink);
+      }
+      body {
+        margin: 0;
+        background: var(--ink);
+        color: var(--paper-dim);
+        font-family: var(--body);
+        font-size: 1.0625rem;
+        line-height: 1.65;
+      }
+      a {
+        color: var(--paper);
+        text-decoration-color: var(--seal);
+        text-underline-offset: 3px;
+      }
+      a:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+      .wrap {
+        max-width: 44rem;
+        margin: 0 auto;
+        padding: 2rem 1rem 4rem;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: var(--paper);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .brand img {
+        width: 28px;
+        height: 28px;
+      }
+      h1 {
+        font-family: var(--display);
+        font-weight: 600;
+        color: var(--paper);
+        font-size: clamp(2rem, 6vw, 2.8rem);
+        line-height: 1.15;
+        margin: 2rem 0 0.5rem;
+      }
+      h2 {
+        font-family: var(--display);
+        font-weight: 500;
+        color: var(--paper);
+        font-size: 1.4rem;
+        margin: 2.4rem 0 0.4rem;
+      }
+      .updated {
+        color: var(--mute);
+        margin: 0 0 1.5rem;
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+      li {
+        margin: 0.35rem 0;
+      }
+      .box {
+        background: var(--ink-raised);
+        border: 1px solid var(--ink-line);
+        border-radius: 14px;
+        padding: 1rem 1.2rem;
+        margin: 1.2rem 0;
+      }
+      footer {
+        margin-top: 3rem;
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--ink-line);
+        color: var(--mute);
+        font-size: 0.9rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <a class="brand" href="/"><img src="favicon.svg" alt="" />Envelope</a>
+
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated 20 November 2026</p>
+      <p>
+        Envelope is built so that we know as little about you as possible. This page says what the app and our servers
+        handle, who else sees something, and what you can ask us to delete.
+      </p>
+
+      <div class="box">
+        <strong>In short.</strong> Your encryption keys stay on your phone. Amounts you send are encrypted on Solana, so
+        nobody, including us, can read them. We don&rsquo;t sell data, show ads or build profiles.
+      </div>
+
+      <h2>What stays on your phone</h2>
+      <ul>
+        <li>
+          The keys that lock and unlock your private balance. They are derived from a signature by your wallet and are
+          never sent to us. Where your phone supports it, the signature is kept in secure storage behind your
+          fingerprint or face unlock, so you don&rsquo;t sign again each time.
+        </li>
+        <li>A local, encrypted copy of your decrypted activity, so your history loads quickly.</li>
+        <li>Your list of pots and gift records.</li>
+      </ul>
+      <p>Removing the app deletes all of it. Your funds are not affected, because they live on the blockchain.</p>
+
+      <h2>What our servers receive</h2>
+      <p>The app talks to a service we run, the relayer, which is hosted by Fly.io. To do its job it receives:</p>
+      <ul>
+        <li>
+          <strong>Your wallet address</strong> and the transactions you ask it to co-sign or submit, such as a private
+          send, a refill, a plan purchase, a gift link or a statement. Amounts you send privately are encrypted and not
+          readable by us.
+        </li>
+        <li>
+          <strong>Your IP address</strong>, which is used briefly to limit abuse and appears in our host&rsquo;s
+          standard connection logs.
+        </li>
+        <li>
+          <strong>Your push notification token</strong> and wallet address, if you allow notifications. We keep this in
+          memory to tell your phone &ldquo;you received a payment&rdquo;. The notification never contains an amount. It
+          is cleared when the service restarts, and the app registers it again.
+        </li>
+        <li>
+          <strong>Free-refill records:</strong> which wallets have had a refill, when, and the gas-tank address tied to
+          each wallet. On mainnet we may also record that a Seeker Genesis Token has been used for a free refill.
+        </li>
+        <li>
+          <strong>Counts for our dashboard:</strong> numbers such as sends, refills and gift links. A wallet counted
+          there is stored only as a salted, shortened hash, which can count wallets but can&rsquo;t list or identify
+          them. No address, recipient or amount is stored in these counts.
+        </li>
+        <li>
+          <strong>Statements:</strong> when you ask us to seal one, we receive only a fingerprint (a hash) of it, never
+          the figures. The statement itself lives in the link you share.
+        </li>
+        <li><strong>The contact form:</strong> the name, email and message you type, kept until we delete it.</li>
+      </ul>
+
+      <h2>What is public on the blockchain</h2>
+      <p>
+        Solana is a public ledger and its records can&rsquo;t be deleted. It shows which addresses made a transfer and
+        when, fees and plan payments, and that pots and gift links exist. It does not show amounts of private transfers,
+        which are encrypted. If you share a statement, whoever has the link sees the figures you included.
+      </p>
+
+      <h2>Who else is involved</h2>
+      <ul>
+        <li>
+          <strong>Solana RPC provider.</strong> Your app reads the blockchain through our relayer, which forwards the
+          requests to a node provider (Helius, or an equivalent). The provider sees the addresses looked up, but the
+          requests come from our server, so your IP address isn&rsquo;t passed on to it. The statement verify page,
+          which runs in your browser, reads from the public network directly.
+        </li>
+        <li><strong>Expo&rsquo;s push notification service</strong> delivers notifications to your phone.</li>
+        <li><strong>Your wallet app</strong> (for example Solflare) handles your signatures under its own policy.</li>
+        <li>
+          <strong>Fly.io</strong> hosts the relayer. <strong>GitHub</strong> hosts this website and the app downloads.
+        </li>
+        <li>
+          <strong>A public price feed</strong> (Jupiter) is read by our server to price refills. It receives no user
+          data.
+        </li>
+      </ul>
+      <p>We don&rsquo;t share data with advertisers, and the app has no advertising or third-party analytics kits.</p>
+
+      <h2>Permissions the app asks for</h2>
+      <ul>
+        <li><strong>Camera:</strong> only to scan a QR code. Images are not stored or sent anywhere.</li>
+        <li>
+          <strong>Biometrics:</strong> only to unlock on your phone. We never receive your fingerprint or face data.
+        </li>
+        <li><strong>Notifications:</strong> only to tell you about incoming payments.</li>
+      </ul>
+
+      <h2>How long we keep things</h2>
+      <ul>
+        <li>Counts and refill records are kept while the service runs, so limits and the dashboard keep working.</li>
+        <li>Contact messages are kept until we delete them or you ask us to.</li>
+        <li>Connection logs are kept by our host for a short time under its own settings.</li>
+      </ul>
+
+      <h2>Your choices</h2>
+      <ul>
+        <li>
+          Turn off notifications in your phone&rsquo;s settings, or remove the app, to stop us holding your push token.
+        </li>
+        <li>
+          Ask us to delete a contact message, or to remove the records tied to your wallet that we can delete, through
+          the <a href="/#contact-title">contact form</a>. We can&rsquo;t change what is on the blockchain.
+        </li>
+        <li>
+          Depending on where you live you may have rights to access, correct or delete your data. Use the same contact
+          form to ask.
+        </li>
+      </ul>
+
+      <h2>Children</h2>
+      <p>Envelope is not for anyone under 18, and we don&rsquo;t knowingly collect data from children.</p>
+
+      <h2>Changes</h2>
+      <p>
+        If we change this policy, we&rsquo;ll update the date at the top. If a change affects what we collect,
+        we&rsquo;ll say so in the app or on our website.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about your data? Write to us through the <a href="/#contact-title">contact form</a> on our website.
+        Our <a href="terms.html">Terms of Use</a> apply to your use of Envelope.
+      </p>
+
+      <footer>
+        <a href="/">Home</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="/#contact-title">Contact us</a>
+      </footer>
+    </div>
+  </body>
+</html>
